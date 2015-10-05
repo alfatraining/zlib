@@ -8,11 +8,11 @@ include(CMakePackageConfigHelpers)
 option(BUILD_ASM686 "Enable building i686 assembly implementation")
 option(BUILD_AMD64 "Enable building amd64 assembly implementation")
 option(BUILD_SHARED_LIBS "Enable building of shared library" OFF)
-option(USE_STATIC_RUNTIME "Use static msvc runtime" OFF)
+option(MSVC_LINK_STATIC_RUNTIME "Use static msvc runtime" OFF)
 option(BUILD_EXAMPLES "Enable building of examples" ON)
 
 # statically link msvc runtime
-if(MSVC AND USE_STATIC_RUNTIME)
+if(MSVC AND MSVC_LINK_STATIC_RUNTIME)
 	foreach(flag_var
 		CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
 		CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO)
