@@ -7,7 +7,6 @@ include(CMakePackageConfigHelpers)
 
 option(BUILD_ASM686 "Enable building i686 assembly implementation")
 option(BUILD_AMD64 "Enable building amd64 assembly implementation")
-option(BUILD_SHARED_LIBS "Enable building of shared library" OFF)
 option(MSVC_LINK_STATIC_RUNTIME "Use static msvc runtime" OFF)
 option(BUILD_EXAMPLES "Enable building of examples" ON)
 
@@ -198,7 +197,7 @@ if(MINGW)
 	set(ZLIB_DLL_SRCS ${CMAKE_CURRENT_BINARY_DIR}/zlib1rc.obj)
 endif(MINGW)
 
-if(BUILD_SHARED_LIBS)
+if(CMAKE_SHARED_LIBS)
 	list(APPEND symbols
 		"ZLIB_DLL")
 endif()
