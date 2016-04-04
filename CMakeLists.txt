@@ -22,6 +22,9 @@ if(MSVC AND MSVC_LINK_STATIC_RUNTIME)
 	endforeach(flag_var)
 endif()
 
+# support both debug and release libraries in the same lib path
+set(CMAKE_DEBUG_POSTFIX "d")
+
 set(INSTALL_BIN_DIR "bin" CACHE PATH "Installation directory for executables")
 set(INSTALL_LIB_DIR "lib" CACHE PATH "Installation directory for libraries")
 set(INSTALL_INC_DIR "include" CACHE PATH "Installation directory for headers")
