@@ -7,6 +7,7 @@ include(CMakePackageConfigHelpers)
 
 option(BUILD_ASM686 "Enable building i686 assembly implementation")
 option(BUILD_AMD64 "Enable building amd64 assembly implementation")
+option(BUILD_SHARED_LIBS "Build shared library version instead of static" OFF)
 option(MSVC_LINK_STATIC_RUNTIME "Use static msvc runtime" OFF)
 option(BUILD_EXAMPLES "Enable building of examples" ON)
 
@@ -77,7 +78,6 @@ endif()
 check_include_file(unistd.h Z_HAVE_UNISTD_H)
 
 if(MSVC)
-	set(CMAKE_DEBUG_POSTFIX "d")
 	add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
 	add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -211,7 +211,7 @@ set_target_properties(zlib PROPERTIES
 	DEFINE_SYMBOL "${symbols}"
 	IMPORT_PREFIX ""
 	IMPORT_SUFFIX _imp${CMAKE_IMPORT_LIBRARY_SUFFIX}
-#	PREFIX ""
+	PREFIX ""
 	SOVERSION ${PROJECT_VERSION_MAJOR})
 
 if(UNIX AND NOT APPLE)
@@ -253,18 +253,38 @@ if(BUILD_EXAMPLES)
 	add_executable(example test/example.c)
 	target_link_libraries(example zlib)
 	add_test(example example)
+	install(TARGETS example
+		EXPORT ${PROJECT_NAME}Config
+		RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+		ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+		LIBRARY DESTINATION "${INSTALL_LIB_DIR}")
 
 	add_executable(minigzip test/minigzip.c)
 	target_link_libraries(minigzip zlib)
+	install(TARGETS minigzip
+		EXPORT ${PROJECT_NAME}Config
+		RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+		ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+		LIBRARY DESTINATION "${INSTALL_LIB_DIR}")
 
 	if(HAVE_OFF64_T)
 		add_executable(example64 test/example.c)
 		target_link_libraries(example64 zlib)
 		set_target_properties(example64 PROPERTIES COMPILE_FLAGS "-D_FILE_OFFSET_BITS=64")
 		add_test(example64 example64)
+		install(TARGETS example64
+			EXPORT ${PROJECT_NAME}Config
+			RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+			LIBRARY DESTINATION "${INSTALL_LIB_DIR}")
 
 		add_executable(minigzip64 test/minigzip.c)
 		target_link_libraries(minigzip64 zlib)
 		set_target_properties(minigzip64 PROPERTIES COMPILE_FLAGS "-D_FILE_OFFSET_BITS=64")
+		install(TARGETS minigzip64
+			EXPORT ${PROJECT_NAME}Config
+			RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+			LIBRARY DESTINATION "${INSTALL_LIB_DIR}")
 	endif()
 endif()
